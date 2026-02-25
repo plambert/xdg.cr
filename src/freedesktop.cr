@@ -68,6 +68,12 @@ module Freedesktop
     cached_value "XDG_CONFIG_HOME", "~/.config"
   end
 
+  # Returns the base directory for user-specific non-essential cached data.
+  # Uses `$XDG_CACHE_HOME`, defaulting to `~/.cache`.
+  def xdg_cache_home
+    cached_value "XDG_CACHE_HOME", "~/.cache"
+  end
+
   # Returns the base directory for user-specific state data.
   # Uses `$XDG_STATE_HOME`, defaulting to `~/.local/state`.
   def xdg_state_home

@@ -5,6 +5,7 @@ require "file_utils"
 ENV_VARS = %w[
   XDG_DATA_HOME
   XDG_CONFIG_HOME
+  XDG_CACHE_HOME
   XDG_STATE_HOME
   XDG_DATA_DIRS
   XDG_CONFIG_DIRS
@@ -82,6 +83,25 @@ describe Freedesktop do
     it "returns the env var path when XDG_CONFIG_HOME is set" do
       ENV["XDG_CONFIG_HOME"] = "/custom/config"
       Freedesktop.xdg_config_home.should eq(Path["/custom/config"])
+    end
+  end
+
+  describe "#xdg_cache_home" do
+    it "returns ~/.cache expanded when XDG_CACHE_HOME is not set" do
+      tmp = File.tempname("xdg_test_home", "")
+      Dir.mkdir_p(tmp)
+      ENV["HOME"] = tmp
+      begin
+        result = Freedesktop.xdg_cache_home
+        result.should eq(Path[tmp] / ".cache")
+      ensure
+        FileUtils.rm_rf(tmp)
+      end
+    end
+
+    it "returns the env var path when XDG_CACHE_HOME is set" do
+      ENV["XDG_CACHE_HOME"] = "/custom/cache"
+      Freedesktop.xdg_cache_home.should eq(Path["/custom/cache"])
     end
   end
 
