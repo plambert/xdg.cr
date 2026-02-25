@@ -62,10 +62,20 @@ module Freedesktop
     cached_value "XDG_DATA_HOME", "~/.local/share"
   end
 
+  # :ditto:
+  def data_home
+    xdg_data_home
+  end
+
   # Returns the base directory for user-specific configuration files.
   # Uses `$XDG_CONFIG_HOME`, defaulting to `~/.config`.
   def xdg_config_home
     cached_value "XDG_CONFIG_HOME", "~/.config"
+  end
+
+  # :ditto:
+  def config_home
+    xdg_config_home
   end
 
   # Returns the base directory for user-specific non-essential cached data.
@@ -74,10 +84,20 @@ module Freedesktop
     cached_value "XDG_CACHE_HOME", "~/.cache"
   end
 
+  # :ditto:
+  def cache_home
+    xdg_cache_home
+  end
+
   # Returns the base directory for user-specific state data.
   # Uses `$XDG_STATE_HOME`, defaulting to `~/.local/state`.
   def xdg_state_home
     cached_value "XDG_STATE_HOME", "~/.local/state"
+  end
+
+  # :ditto:
+  def state_home
+    xdg_state_home
   end
 
   # Returns the preference-ordered set of additional directories to
@@ -87,6 +107,11 @@ module Freedesktop
     cached_list "XDG_DATA_DIRS", "/usr/local/share/:/usr/share/"
   end
 
+  # :ditto:
+  def data_dirs
+    xdg_data_dirs
+  end
+
   # Returns the preference-ordered set of additional directories to
   # search for configuration files. Uses `$XDG_CONFIG_DIRS`, defaulting
   # to `/etc/xdg`.
@@ -94,10 +119,20 @@ module Freedesktop
     cached_list "XDG_CONFIG_DIRS", "/etc/xdg"
   end
 
+  # :ditto:
+  def config_dirs
+    xdg_config_dirs
+  end
+
   # Returns the base directory for user-specific runtime files (sockets,
   # named pipes, etc.). Uses `$XDG_RUNTIME_DIR`, defaulting to
   # `Dir.tempdir/.xdg_runtime_dir`.
   def xdg_runtime_dir
     cached_value "XDG_RUNTIME_DIR", "#{Dir.tempdir}/.xdg_runtime_dir"
+  end
+
+  # :ditto:
+  def runtime_dir
+    xdg_runtime_dir
   end
 end
