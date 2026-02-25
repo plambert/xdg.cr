@@ -42,7 +42,7 @@ module Freedesktop
   end
 
   def xdg_config_home
-    cached_value "XDG_CONFIG_HOME", "~/.cache"
+    cached_value "XDG_CONFIG_HOME", "~/.config"
   end
 
   def xdg_state_home
