@@ -53,13 +53,13 @@ describe Freedesktop do
       Freedesktop.xdg_data_home.should eq(Path["/custom/data"])
     end
 
-    it "creates the directory when using the default" do
+    it "does not create the directory" do
       tmp = File.tempname("xdg_test_home", "")
       Dir.mkdir_p(tmp)
       ENV["HOME"] = tmp
       begin
         result = Freedesktop.xdg_data_home
-        File.directory?(result).should be_true
+        File.directory?(result).should be_false
       ensure
         FileUtils.rm_rf(tmp)
       end
@@ -146,17 +146,11 @@ describe Freedesktop do
       end
     end
 
-    it "creates directory with 0o700 permissions" do
+    it "does not create the directory" do
       tmp = File.tempname("xdg_runtime", "")
       ENV["XDG_RUNTIME_DIR"] = tmp
-      begin
-        Freedesktop.xdg_runtime_dir
-        File.directory?(tmp).should be_true
-        info = File.info(tmp)
-        (info.permissions.value & 0o777).should eq(0o700)
-      ensure
-        FileUtils.rm_rf(tmp)
-      end
+      Freedesktop.xdg_runtime_dir
+      File.directory?(tmp).should be_false
     end
   end
 

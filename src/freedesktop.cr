@@ -17,7 +17,6 @@ module Freedesktop
     end
 
     path = Path[default].expand(home: true)
-    Dir.mkdir_p path, mode: 0o700 unless File.directory? path
     VALUE_CACHE[env_var] = path
     path
   end
@@ -58,11 +57,6 @@ module Freedesktop
   end
 
   def xdg_runtime_dir
-    dir = cached_value "XDG_RUNTIME_DIR", "#{Dir.tempdir}/.xdg_runtime_dir"
-    unless File.directory? dir
-      Dir.mkdir_p dir, mode: 0o700
-      File.chmod(dir, 0o700)
-    end
-    dir
+    cached_value "XDG_RUNTIME_DIR", "#{Dir.tempdir}/.xdg_runtime_dir"
   end
 end
