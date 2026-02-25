@@ -1,8 +1,28 @@
-# Provide XDG base directories on a POSIX or POSIX-like system
+# Implements the XDG Base Directory Specification for resolving
+# user-specific and system-wide base directories on POSIX systems.
+#
+# See: https://specifications.freedesktop.org/basedir/latest/
+#
+# All methods return `Path` values and cache their results for the
+# lifetime of the process. Directories are **not** created by this
+# module; that is the caller's responsibility at write time, per the spec.
+#
+# ```
+# Freedesktop.xdg_config_home # => Path["/home/user/.config"]
+# Freedesktop.xdg_data_dirs   # => [Path["/usr/local/share/"], Path["/usr/share/"]]
+# ```
 module Freedesktop
-  VERSION     = {{ `shards version {{__DIR__}}`.chomp.stringify }}
+  VERSION = {{ `shards version {{__DIR__}}`.chomp.stringify }}
+
+  # Cache for single-path lookups (the `_home` and `_dir` methods).
+  # Keyed by environment variable name. Clear this to force re-reading
+  # from the environment on next access.
   VALUE_CACHE = {} of String => Path
-  LIST_CACHE  = {} of String => Array(Path)
+
+  # Cache for multi-path lookups (the `_dirs` methods).
+  # Keyed by environment variable name. Clear this to force re-reading
+  # from the environment on next access.
+  LIST_CACHE = {} of String => Array(Path)
 
   extend self
 
@@ -36,26 +56,41 @@ module Freedesktop
     paths
   end
 
+  # Returns the base directory for user-specific data files.
+  # Uses `$XDG_DATA_HOME`, defaulting to `~/.local/share`.
   def xdg_data_home
     cached_value "XDG_DATA_HOME", "~/.local/share"
   end
 
+  # Returns the base directory for user-specific configuration files.
+  # Uses `$XDG_CONFIG_HOME`, defaulting to `~/.config`.
   def xdg_config_home
     cached_value "XDG_CONFIG_HOME", "~/.config"
   end
 
+  # Returns the base directory for user-specific state data.
+  # Uses `$XDG_STATE_HOME`, defaulting to `~/.local/state`.
   def xdg_state_home
     cached_value "XDG_STATE_HOME", "~/.local/state"
   end
 
+  # Returns the preference-ordered set of additional directories to
+  # search for data files. Uses `$XDG_DATA_DIRS`, defaulting to
+  # `/usr/local/share/:/usr/share/`.
   def xdg_data_dirs
     cached_list "XDG_DATA_DIRS", "/usr/local/share/:/usr/share/"
   end
 
+  # Returns the preference-ordered set of additional directories to
+  # search for configuration files. Uses `$XDG_CONFIG_DIRS`, defaulting
+  # to `/etc/xdg`.
   def xdg_config_dirs
     cached_list "XDG_CONFIG_DIRS", "/etc/xdg"
   end
 
+  # Returns the base directory for user-specific runtime files (sockets,
+  # named pipes, etc.). Uses `$XDG_RUNTIME_DIR`, defaulting to
+  # `Dir.tempdir/.xdg_runtime_dir`.
   def xdg_runtime_dir
     cached_value "XDG_RUNTIME_DIR", "#{Dir.tempdir}/.xdg_runtime_dir"
   end
