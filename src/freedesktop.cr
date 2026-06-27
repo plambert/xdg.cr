@@ -12,7 +12,9 @@
 # Freedesktop.xdg_data_dirs   # => [Path["/usr/local/share/"], Path["/usr/share/"]]
 # ```
 module Freedesktop
-  VERSION = {{ `shards version {{__DIR__}}`.chomp.stringify }}
+  {% begin %}
+  VERSION = {{ `shards version`.chomp.stringify }}
+  {% end %}
 
   # Cache for single-path lookups (the `_home` and `_dir` methods).
   # Keyed by environment variable name. Clear this to force re-reading
