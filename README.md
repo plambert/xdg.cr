@@ -1,4 +1,4 @@
-# freedesktop
+# xdg
 
 Simple implementation of the [freedesktop.org](https://freedesktop.org) [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir/latest/)
 
@@ -8,8 +8,8 @@ Simple implementation of the [freedesktop.org](https://freedesktop.org) [XDG Bas
 
    ```yaml
    dependencies:
-     freedesktop:
-       github: plambert/freedesktop.cr
+     xdg:
+       github: plambert/xdg.cr
    ```
 
 2. Run `shards install`
@@ -17,10 +17,18 @@ Simple implementation of the [freedesktop.org](https://freedesktop.org) [XDG Bas
 ## Usage
 
 ```crystal
-require "freedesktop"
+require "xdg"
+
+XDG.xdg_config_home # => Path["/home/user/.config"]
+XDG.xdg_data_dirs   # => [Path["/usr/local/share/"], Path["/usr/share/"]]
 ```
 
-TODO: Write usage instructions here
+The module is also available under the `Freedesktop` name for callers who
+prefer to name it after the specification:
+
+```crystal
+Freedesktop.xdg_config_home # => Path["/home/user/.config"]
+```
 
 ## Development
 
@@ -28,7 +36,7 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/plambert/freedesktop.cr/fork>)
+1. Fork it (<https://github.com/plambert/xdg.cr/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

@@ -13,7 +13,7 @@ ENV_VARS = %w[
 ]
 
 {% begin %}
-  {% for modname in %w[Freedesktop XDG] %}
+  {% for modname in %w[XDG Freedesktop] %}
     describe {{ modname.id }} do
       # Save and restore env vars around each test, and clear caches
       saved_env = {} of String => String?
